@@ -27,5 +27,8 @@ class LoginForm(AuthenticationForm):
 class TasklistForm(ModelForm):
     class Meta:
         model = Tasklist
-        fields = ['title','status']
+        fields = ['title','status','schedule']
+        widgets = {
+            'schedule':forms.TimeInput(attrs={'type':'time'})
+        }
        
