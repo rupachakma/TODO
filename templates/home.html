@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+
+  <div class="container pt-5">
+    <div class="row p-0 mx-auto">
+      <div class="col-5 shadow p-0">
+        <div class="alert alert-info d-flex"><h3>Add New Todo</h3>
+         <a href="{{profilepic}}" target="_blank"  class=" ms-auto">
+          <img src="{{profilepic}}" alt="Avatar" class="rounded-circle" width="50px" height="50px">
+         </a>
+          <a href="{% url 'myprofile' %}" title="Update profile" style="text-decoration: none;">Hello {{request.user.username}}🙋‍♀️</a>
+        </div>
+
+          <div class="p-4">
+            <form action="{% url 'addtask' %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <hr>
+                <input type="submit" class="btn btn-success mt-2" value="Add Todo">
+            </form>
+          </div>
+      </div>
+
+      <div class="col">
+        <div class="border">
+          
+            {% if task|length == 0 %}
+            <div class="alert alert-info text-center">
+              <h3>No Todo</h3>
+            </div>
+            {% else %}
+            <div>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Create at</th>
+                    <th class="text-center">Schedule</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in task %}
+                  <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="text-center">{{i.title}}</td>
+                    <td class="text-center">
+                        {% if i.status == 'C' %}
+                        ✅
+                        {% else %}
+                        ⏰
+                        {% endif %}
+                    </td>
+                    <td class="text-center">{{i.createat}}</td>
+                    <td class="text-center">{{i.schedule}}</td>
+                    <td class="text-center">
+                      <div class="actions">
+                         <a href="{% url 'deletetask' i.id %}" title="Delete" style="text-decoration: none;">🗑️</a>
+                         {% if i.status == 'P' %}
+                         <a href="/change_status/{{i.id}}/C" title="Completed" style="text-decoration: none;">✅</a>
+                         {% else %}
+                         <a href="/change_status/{{i.id}}/P" title="Pending" style="text-decoration: none;">⏰</a>
+                         {% endif %}
+                      </div>
+                   </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+
+        </div>
+      </div> 
+
+    </div>
+  </div>
+
+  {% endblock%}
