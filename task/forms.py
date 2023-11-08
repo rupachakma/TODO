@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,UsernameField
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,UsernameField,UserChangeForm
 from task.models import Tasklist
 from django.contrib.auth.models import User
 
@@ -31,4 +31,16 @@ class TasklistForm(ModelForm):
         widgets = {
             'schedule':forms.TimeInput(attrs={'type':'time'})
         }
-       
+
+class UpdateProfileForm(UserChangeForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=True)
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=True)
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=True)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}),required=True)
+    profilepic = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class':'form-control'}),required=False)
+    
+    class Meta:
+        models = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+    

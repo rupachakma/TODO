@@ -5,12 +5,29 @@
   <div class="container pt-5">
     <div class="row p-0 mx-auto">
       <div class="col-5 shadow p-0">
-        <div class="alert alert-info d-flex"><h3>Add New Todo</h3>
-         <a href="{{profilepic}}" target="_blank"  class=" ms-auto">
-          <img src="{{profilepic}}" alt="Avatar" class="rounded-circle" width="50px" height="50px">
-         </a>
-          <a href="{% url 'myprofile' %}" title="Update profile" style="text-decoration: none;">Hello {{request.user.username}}🙋‍♀️</a>
-        </div>
+          <div class="alert alert-info d-flex"><h3>Add New Todo</h3><br>
+            <div class="user-image ms-auto">
+          
+            <a href="{{profilepic}}" target="_blank"  class=" ms-auto">
+              <img src="{{profilepic}}" alt="Avatar" class="rounded-circle" width="60px" height="60px">
+             </a>
+            </div>
+                <div class="dropdown">
+                  <span class="icon" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <!-- Use any icon or image you want as the trigger -->
+                      <i class="fa-solid fa-caret-down p-4"></i>
+                  </span>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="user-profile">
+                      <img src="{{profilepic}}" alt="Avatar" class="rounded-circle" width="50px" height="50px">
+                      Hello {{request.user.username}}
+                    </div>
+                      <li><a class="dropdown-item" href="{% url 'myprofile' %}">My profile</a></li>
+                      <li><a class="dropdown-item" href="#">Inbox</a></li>
+                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                  </ul>
+                </div>
+          </div>
 
           <div class="p-4">
             <form action="{% url 'addtask' %}" method="POST">

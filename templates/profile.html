@@ -1,47 +1,57 @@
 {% extends 'base.html' %}
 
   {% block content %}
-  <div class="container pt-5">
-        <div class="col-6 shadow p-5 mx-auto  bg-gradient"> 
-            <form method="post", action="" enctype="multipart/form-data">
+  <div class="container p-5">
+        <div class="col-6 shadow mx-auto  bg-gradient"> 
+            <form method="post", action="{% url 'updateprofile' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>
                     <div class="text-center">
                         <h5 class="alert alert-info"><span>Profile Information</span></h5>
+                    </div>
+
+                    {% if messages %}
+                        {% for i in messages %}
+                        <div class="alert alert-success">{{i}}</div>
+                        {% endfor %}
+                    {% endif %}         
+
+                    <div class="p-5">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input name="username" type="text" class="form-control" value="{{user.username}}">
                         </div>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input name="username" type="text" class="form-control" value="">
-                    </div>
-                
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input name="first_name" type="text" class="form-control" >
-                    </div>
+                    
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input name="first_name" type="text" class="form-control" value="{{user.first_name}}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input name="last_name" type="text" class="form-control" >
-                    </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input name="last_name" type="text" class="form-control" value="{{user.last_name}}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input name="password" type="text" class="form-control" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input name="email" type="text" class="form-control" value="" readonly>
-                    </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input name="password" type="text" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input name="email" type="text" class="form-control" value="{{user.email}}" readonly>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label> Profile Pic </label>
+                            <!-- <img src="{{user.profilepic}}"alt="avatar" width="150px"> -->
+                            <input name="profilepic" type="file" class="form-control" value="{{user.profilepic}}">
+                        </div>
                 
-                    <div class="form-group">
-                        <label> Profile Pic </label>
-                        <img src=""alt="avatar" width="150px">
-                        <input name="profilepic" type="file" class="form-control" value="" >
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
                     </div>
-            
-                    <div class="mt-2">
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
-                    </div>
+                    
                 </div>
             </form>
         </div>

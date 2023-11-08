@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as loginUser,logout
-from task.forms import LoginForm, SignupForm, TasklistForm
+from task.forms import LoginForm, SignupForm, TasklistForm, UpdateProfileForm
 from django.contrib.auth.decorators import login_required
 from task.models import Profileimg, Tasklist
 
@@ -90,13 +90,21 @@ def myprofile(request):
     }
     return render(request,"profile.html",context)
 
-# def updateprofile(request):
-#     if request.method == "POST":
-#         username = request.POST.get("username")
-#         firstname = request.POST.get("first_name")
-#         lastname = request.POST.get("last_name")
-#         password = request.POST.get("password")
-#         email = request.POST.get("email")
-#         profilepic = request.FILES.get("profilepic")
 
-#         myuser = user
+@login_required
+def updateprofile(request):
+    if request.method == "POST":
+        form = UpdateProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            # Handle the profile picture update
+            profilepic = request.FILES.get('profilepic')
+            if profilepic:
+                profile_img, created = Profileimg.objects.get_or_create(user=request.user)
+                profile_img.profilepic = profilepic
+                profile_img.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('updateprofile')
+    else:
+        form = UpdateProfileForm(instance=request.user)
+    return render(request, 'updateprofile.html', {'form': form})
